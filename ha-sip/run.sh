@@ -8,9 +8,9 @@ sed -i -- 's~://supervisor/core/~://homeassistant:8123/~g' /ha-sip/config.py
 
 # Read options.json manually and store it in bashio cache
 # (Otherwise, bashio would try to query the supervisor in order to get the config)
-
-
 bashio::cache.set "addons.self.options.config" "$(jq -r tostring /data/options.json)"
+
+
 sed -i -- 's~\$PORT~'"$(bashio::config 'sip_global.port')"'~g' /ha-sip/config.py
 sed -i -- 's~\$LOG_LEVEL~'"$(bashio::config 'sip_global.log_level')"'~g' /ha-sip/config.py
 sed -i -- 's~\$NAME_SERVER~'"$(bashio::config 'sip_global.name_server')"'~g' /ha-sip/config.py
