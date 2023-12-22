@@ -1,5 +1,11 @@
 # ![logo](icon.png) ha-sip 
 
+> **NOTE: This is just a fork of [arnonym/ha-plugins](https://github.com/arnonym/ha-plugins) to make it work in a standalone Docker container.**
+>
+> No HA OS or Supervisor is needed. Communication with HA is done directly with `socat` inside the internal Docker compose setup. This is not very sophisticated, but ... it does the job.
+
+---
+
 ### Home Assistant SIP/VoIP Gateway is a Home Assistant add-on which 
 - allows the dialing and hanging up of phone numbers through a SIP end-point 
 - triggering of services through dial tones (DTMF) after the call was established.
