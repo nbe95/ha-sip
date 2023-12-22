@@ -53,7 +53,9 @@ sed -i -- 's~\$TOKEN~'"${SUPERVISOR_TOKEN}"'~g' /ha-sip/config.py
 
 
 # DO NOT EXPOSE THIS PORT TO THE OUTSIDE WORLD
-mkfifo /ha-sip/stdin
+if [ ! -p /ha-sip/stdin ]; then
+    mkfifo /ha-sip/stdin
+fi
 socat -u tcp-listen:7778,fork pipe:/ha-sip/stdin &
 
 python3 --version
