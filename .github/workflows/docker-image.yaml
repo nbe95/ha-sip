@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./ha-sip/
-          file: ./Dockerfile
+          file: ./ha-sip/Dockerfile
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.commit.outputs.sha_short }}
