@@ -61,5 +61,9 @@ fi
 # DO NOT EXPOSE THIS PORT TO THE OUTSIDE WORLD!
 socat -u tcp-listen:7778,fork pipe:/ha-sip/stdin &
 
+# Since the last update, this is needed once to get the whole thing running
+# Why? Absolutely no idea...
+sleep 10 && echo "" > /ha-sip/stdin &
+
 python3 --version
 python3 /ha-sip/main.py < /ha-sip/stdin
