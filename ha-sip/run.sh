@@ -52,10 +52,13 @@ sed -i -- 's~\$HA_WEBHOOK_ID~'"$(bashio::config 'webhook.id')"'~g' /ha-sip/confi
 sed -i -- 's~\$TOKEN~'"${SUPERVISOR_TOKEN}"'~g' /ha-sip/config.py
 
 
-# DO NOT EXPOSE THIS PORT TO THE OUTSIDE WORLD
+# Create pipe for external commands
 if [ ! -p /ha-sip/stdin ]; then
     mkfifo /ha-sip/stdin
 fi
+
+# Listen on the local notwork for commands
+# DO NOT EXPOSE THIS PORT TO THE OUTSIDE WORLD!
 socat -u tcp-listen:7778,fork pipe:/ha-sip/stdin &
 
 python3 --version
