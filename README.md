@@ -1,13 +1,17 @@
-# ![logo](icon.png) ha-sip 
+# ![logo](icon.png) ha-sip
 
-> **NOTE: This is just a fork of [arnonym/ha-plugins](https://github.com/arnonym/ha-plugins) to make it work in a standalone Docker container.**
+> [!WARNING]
+> **Deprecated since [standalone support](https://github.com/arnonym/ha-plugins/pull/102).**
+
+> [!IMPORTANT]
+> This is just a fork of [arnonym/ha-plugins](https://github.com/arnonym/ha-plugins) to make it work in a standalone Docker container.
 >
 > No HA OS or Supervisor is needed. Communication with HA is done directly with `socat` inside the internal Docker compose setup. This is not very sophisticated, but ... it does the job.
 
 ---
 
-### Home Assistant SIP/VoIP Gateway is a Home Assistant add-on which 
-- allows the dialing and hanging up of phone numbers through a SIP end-point 
+### Home Assistant SIP/VoIP Gateway is a Home Assistant add-on which
+- allows the dialing and hanging up of phone numbers through a SIP end-point
 - triggering of services through dial tones (DTMF) after the call was established.
 - listens for incoming calls and can trigger actions through a web-hook (the call is not picked up)
 - accepting calls (optionally filtered by number)
@@ -68,7 +72,7 @@ Outgoing calls are made via the `hassio.addon_stdin` service in the action part 
 To be able to enter the full command, you must switch to YAML mode by clicking on the menu with the triple dot and
 selecting `Edit in YAML`.
 
-You can use `dial` and `hangup` with the `hassio.addon_stdin` service to control outgoing calls in an action in 
+You can use `dial` and `hangup` with the `hassio.addon_stdin` service to control outgoing calls in an action in
 your automation:
 
 ```yaml
@@ -85,7 +89,7 @@ data_template:
             dtmf_digit: another_webhook_id
             call_disconnected: another_webhook_id
         ring_timeout: 15 # time to ring in seconds (optional, defaults to 300)
-        sip_account: 1 # number of configured sip account: 1 or 2 
+        sip_account: 1 # number of configured sip account: 1 or 2
                        # (optional, defaults to first enabled sip account)
         menu:
             message: There's a burglar in da house.
@@ -154,7 +158,7 @@ data_template:
 In `listen` mode no call will be answered (picked up) but you can trigger an automation through a [Webhook trigger](https://www.home-assistant.io/docs/automation/trigger/#webhook-trigger) for every incoming call.
 The webhook ID must match the ID set in the configuration.
 
-You can get the caller from `{{trigger.json.caller}}` or `{{trigger.json.parsed_caller}}` for usage in e.g. the action of your automation. 
+You can get the caller from `{{trigger.json.caller}}` or `{{trigger.json.parsed_caller}}` for usage in e.g. the action of your automation.
 If you also use the menu ID webhook you also need to check for `{{ trigger.json.event == "incoming_call" }}` e.g. in a "Choose" action type.
 
 Example of "incoming call" webhook message:
@@ -237,9 +241,9 @@ menu:
     language: en # TTS language (optional, defaults to the global language from add-on config)
     choices_are_pin: true # If the choices should be handled like PINs (optional, defaults to false)
     timeout: 10 # time in seconds before "timeout" choice is triggered (optional, defaults to 300)
-    post_action: noop # this action will be triggered after the message was played. Can be 
-                      # "noop" (do nothing), 
-                      # "return <level>" (makes only sense in a sub-menu, returns <level> levels, defaults to 1), 
+    post_action: noop # this action will be triggered after the message was played. Can be
+                      # "noop" (do nothing),
+                      # "return <level>" (makes only sense in a sub-menu, returns <level> levels, defaults to 1),
                       # "hangup" (hang-up the call) and
                       # "repeat_message" (repeat the message until the time-out is reached)
                       # "jump <menu-id>" (jumps to menu with id <menu-id>)
@@ -253,7 +257,7 @@ menu:
         '1234': # DTMF sequence, and definition of a sub-menu
             id: owner # same as above, also any other option from above can be used in this sub-menu
             message: Welcome beautiful.
-            post_action: hangup 
+            post_action: hangup
         '5432':
             id: maintenance
             message: Your entrance has been logged.
@@ -265,13 +269,13 @@ menu:
             id: wrong_code
             message: Wrong code, please try again
             post_action: return
-        'timeout': # this will be triggered when there is no input 
+        'timeout': # this will be triggered when there is no input
             id: timeout
             message: Bye.
             post_action: hangup
 ```
 
-> **Note** 
+> **Note**
 > The audio files need to reside in your home-assistant `config` directory, as this is the only directory accessible inside the add-on.
 
 ## Web-hooks
@@ -425,7 +429,7 @@ ha-sip itself (prefixed with "|").
 
 ## Example use-cases
 
-One automation with the `dial` command when the doorbell was rung, and a second with `hangup` when the front door was opened, 
+One automation with the `dial` command when the doorbell was rung, and a second with `hangup` when the front door was opened,
 so I do not need to answer the call when not necessary.
 
 I would like to hear from you in which scenario you are using ha-sip!
@@ -437,12 +441,12 @@ I would like to hear from you in which scenario you are using ha-sip!
 3. Copy `ha-sip/src/config.py` to `ha-sip/src/config_local.py` and replace the variable place-holders with your real configuration.
 
    `HA_BASE_URL` is something like "http://homeassistant.local:8123/api"
-   
-   The access token is created from http://homeassistant.local:8123/profile 
+
+   The access token is created from http://homeassistant.local:8123/profile
 4. Run `ha-sip/src/main.py local` to run the add-on locally
 5. Paste commands as json (without line-breaks) into stdin of the running add-on:
 
-   Example: 
+   Example:
    ```json
    { "command": "dial", "number": "sip:**620@fritz.box", "menu": { "message": "Hello from ha-sip.", "language": "en" } }
    ```
