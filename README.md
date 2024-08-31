@@ -1,7 +1,7 @@
-# ![logo](icon.png) ha-sip
-
-> [!WARNING]
+> [!CAUTION]
 > **Deprecated since [standalone support](https://github.com/arnonym/ha-plugins/pull/102).**
+
+# ![logo](icon.png) ha-sip
 
 > [!IMPORTANT]
 > This is just a fork of [arnonym/ha-plugins](https://github.com/arnonym/ha-plugins) to make it work in a standalone Docker container.
